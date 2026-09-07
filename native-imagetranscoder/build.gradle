@@ -10,6 +10,17 @@ import com.facebook.fresco.buildsrc.GradleDeps
 import com.facebook.fresco.buildsrc.TestDeps
 
 apply plugin: 'com.android.library'
+// This module's sources are half Kotlin (NativeJpegTranscoderSoLoader was converted from
+// .java to .kt upstream in facebook/fresco@f69ccbc6) but the Kotlin plugin was never applied
+// here, so the .kt files are not compiled and NativeJpegTranscoder.java fails with
+// "cannot find symbol NativeJpegTranscoderSoLoader". Upstream's own build.yml has been red on
+// this since then. Same two lines every other Kotlin module in this repo uses (see
+// middleware/build.gradle).
+apply plugin: 'kotlin-android'
+
+kotlin {
+    jvmToolchain(11)
+}
 
 dependencies {
     compileOnly Deps.AndroidX.androidxAnnotation
